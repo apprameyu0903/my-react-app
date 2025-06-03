@@ -1,0 +1,17 @@
+.layout-middle-section {
+  display: flex;
+  flex-grow: 1;
+}
+
+.layout-main-content {
+  flex-grow: 1;
+  padding: 2%;
+  background-color: #fdf0d5; 
+
+}
+
+.layout-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}

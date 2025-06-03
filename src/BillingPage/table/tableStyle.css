@@ -1,0 +1,39 @@
+.product-table-container {
+  margin-top: 3vh;
+  border-radius: 1vw;
+  overflow-x: auto;
+}
+
+.product-table {
+  padding-left: clamp(5%, 7.5%, 10%);
+  padding-right: clamp(5%, 7.5%, 10%);
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 600px;
+  box-sizing: border-box;
+  border: 2px solid black;
+}
+
+.product-table th,
+.product-table td {
+  padding: clamp(1vh, 1.5vh, 1.8vh) clamp(1vw, 1.5vw, 2vw);
+  text-align: left;
+  font-size: clamp(14px, 2vw, 17px);
+  word-wrap: break-word;
+}
+
+.product-table th {
+  background-color: #374151;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: clamp(16px, 2.5vw, 20px);
+  text-transform: uppercase;
+}
+
+.no-products-message {
+  padding: 2vh;
+  text-align: center;
+  color: #6c757d;
+  font-style: italic;
+  font-size: clamp(1.5vw, 2.2vw, 2.5vw);
+}

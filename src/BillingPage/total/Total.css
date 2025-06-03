@@ -1,0 +1,21 @@
+.total-container {
+  margin-top: 4vh;
+  padding: clamp(1.8vh, 2.5vh, 2.8vh) clamp(2vw, 3vw, 3.5vw);
+  background-color: #ffffff;
+  border: 1px solid #dfe4ea;
+  border-radius: clamp(0.8vw, 1vw, 1.2vw);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  text-align: right;
+}
+
+.total-container p {
+  margin: 0;
+  font-size: clamp(1.2em, 3vw, 1.7em);
+  font-weight: bold;
+  color: #212529;
+}
+
+.total-container span {
+  color: #007bff;
+  margin-left: clamp(1vw, 1.5vw, 2vw);
+}

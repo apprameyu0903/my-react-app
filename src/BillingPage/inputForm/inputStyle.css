@@ -1,0 +1,94 @@
+.input-form {
+  margin-bottom: 4vh;
+  padding: clamp(2vw, 3vw, 3.5vw);
+  background-color: #ffffff;
+  border: 1px solid #dfe4ea;
+  border-radius: clamp(0.8vw, 1vw, 1.2vw);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.form-row {
+  display: flex;
+  align-items: flex-end;
+  gap: clamp(1rem, 2vw, 1.5rem);
+  flex-wrap: wrap;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  flex-basis: clamp(150px, 20vw, 200px);
+}
+
+.input-group label {
+  margin-bottom: clamp(0.3rem, 1vh, 0.5rem);
+  font-size: clamp(0.8rem, 1.8vw, 0.9rem);
+  color: #495057;
+  font-weight: 500;
+  text-align: left;
+}
+
+.input-group input {
+  padding: clamp(0.5rem, 1.5vh, 0.75rem) clamp(0.75rem, 2vw, 1rem);
+  border: 1px solid #ced4da;
+  border-radius: clamp(0.3rem, 0.8vw, 0.5rem);
+  font-size: clamp(0.85rem, 2vw, 1rem);
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.input-group input#amount {
+  background-color: #e9ecef;
+  cursor: not-allowed;
+}
+
+.form-row button[type="submit"] {
+  padding: clamp(0.6rem, 1.5vh, 0.8rem) clamp(1rem, 2.5vw, 1.5rem);
+  background-color: #6f42c1;
+  color: white;
+  border: none;
+  border-radius: clamp(0.3rem, 0.8vw, 0.5rem);
+  font-size: clamp(0.85rem, 2vw, 1rem);
+  font-weight: 500;
+  min-height: clamp(2.5rem, 5vh, 3rem);
+  margin-top: clamp(1rem, 1vh, 0.5rem);
+}
+
+
+.form-row button[type="submit"]:hover {
+  background-color: #5a32a3;
+}
+
+.input-group input::placeholder {
+  color: #adb5bd;
+  font-style: italic;
+}
+
+.product-search-group {
+  position: relative; 
+}
+
+.suggestions-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  border: 1px solid #ccc;
+  border-top: none;
+  position: absolute;
+  width: 100%; 
+  background-color: white;
+  z-index: 1000;
+  max-height: 200px;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.suggestions-list li {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.suggestions-list li:hover {
+  background-color: #f0f0f0;
+}
