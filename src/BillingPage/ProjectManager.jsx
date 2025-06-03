@@ -5,7 +5,7 @@ import ProductTable from './table/Table';
 import TotalAmount from './total/Total';
 import axios from 'axios';
 
-function ProjectManager() {
+const ProjectManager = () => {
   const [cartProducts, setCartProducts] = useState([]);
   const [subTotal, setSubTotal] = useState(0);
   const [taxTotal, setTaxTotal] = useState(0);

@@ -1,6 +1,9 @@
 
 .footer-container {
-  background-color: whitesmoke; 
-
-
+  background-color: #003049; 
+  color: beige;
+  text-align: center;
+  padding-top: 1%;
+  padding-bottom: 1%;
+  font-family: 'Courier New', Courier, monospace;
 }

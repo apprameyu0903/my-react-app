@@ -37,11 +37,12 @@ const ProductRow = ({product, onDeleteProduct, onEditProduct, onSaveProduct, onC
         });
     };
 
-    const handleDoubleClick = (e) => {
-        if (e.target.tagName !== 'BUTTON') {
-            onEditProduct(product.id);
+    const handleInputKeyDown = (event) => {
+        if (event.key === 'Tab') {
+            handleSave();
         }
     };
+
     const subTotal = (parseFloat(editedQty) * parseFloat(editedPrice)) || 0;
     const taxAmount = (subTotal * (parseFloat(product.tax)/100))
     const currentAmount = subTotal + taxAmount|| 0;
@@ -54,6 +55,7 @@ const ProductRow = ({product, onDeleteProduct, onEditProduct, onSaveProduct, onC
                         type="number"
                         value={editedQty}
                         onChange={(e) => setEditedQty(e.target.value)}
+                        onKeyDown={handleInputKeyDown}
                         min="0"
                         step="any"
                     />
@@ -63,13 +65,14 @@ const ProductRow = ({product, onDeleteProduct, onEditProduct, onSaveProduct, onC
                         type="number"
                         value={editedPrice}
                         onChange={(e) => setEditedPrice(e.target.value)}
+                        onKeyDown={handleInputKeyDown}
                         min="0"
                         step="any"
                     />
                 </td>
-                <td onDoubleClick={handleDoubleClick}>{subTotal}</td>
-                <td onDoubleClick={handleDoubleClick}>{product.tax}</td>
-                <td onDoubleClick={handleDoubleClick}>{taxAmount}</td>
+                <td>{subTotal.toFixed(2)}</td>
+                <td>{product.tax.toFixed(2)}</td>
+                <td>{taxAmount.toFixed(2)}</td>
                 <td>{currentAmount.toFixed(2)}</td>
                 <td><button onClick={() => onDeleteProduct(product.cartItemId)}>Delete</button></td>
             </tr>
