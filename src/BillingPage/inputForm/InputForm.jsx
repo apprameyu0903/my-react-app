@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import './inputStyle.css';
+import { AddToCartButton } from '../StyledComponents';
+import { useUser } from '../UserContext';
 
 const InputForm = ({ apiProductList, selectedProductFromApi, onProductSelect, onAddProduct }) => {
   const [productIdSearchText, setProductIdSearchText] = useState('');
@@ -8,6 +10,7 @@ const InputForm = ({ apiProductList, selectedProductFromApi, onProductSelect, on
   const [price, setPrice] = useState('');
   const [tax, setTax] = useState('');
   const [amount, setAmount] = useState(0);
+  const { isLogged } = useUser(); 
 
   const [filteredSuggestions, setFilteredSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -78,6 +81,10 @@ const InputForm = ({ apiProductList, selectedProductFromApi, onProductSelect, on
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!isLogged) {
+      alert("Please log in to add products to the cart.");
+    return;
+    }
     const qtyNum = parseFloat(quantity);
     const priceNum = parseFloat(price);
     const taxNum = parseFloat(tax) || 0; 
@@ -160,7 +167,12 @@ const InputForm = ({ apiProductList, selectedProductFromApi, onProductSelect, on
           <label htmlFor="amount">Amount (incl. Tax)</label>
           <input type="number" id="amount" value={amount.toFixed(2)} readOnly style={{ backgroundColor: '#e9ecef' }}/>
         </div>
-        <button type="submit">Add to Cart</button>
+        <AddToCartButton type="submit" disabled={!isLogged}>{isLogged ? "Add to Cart" : "Login to Add"}</AddToCartButton>
+        {!isLogged && (
+        <p style={{ color: 'red', textAlign: 'center', marginTop: '10px', width: '100%' }}>
+          You must be logged in to add items to the cart.
+        </p>
+      )}
       </div>
     </form>
   );

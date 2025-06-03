@@ -4,6 +4,7 @@ import InputForm from './inputForm/InputForm';
 import ProductTable from './table/Table';
 import TotalAmount from './total/Total';
 import axios from 'axios';
+import { ApiError } from './StyledComponents';
 
 const ProjectManager = () => {
   const [cartProducts, setCartProducts] = useState([]);
@@ -177,7 +178,7 @@ const ProjectManager = () => {
 
   return (
     <div>
-      {apiError && <p style={{ color: 'red', textAlign: 'center', padding: '10px', border: '1px solid red' }}>API Error: {apiError}</p>}
+      {apiError && <ApiError>API Error: {apiError}</ApiError>}
       <main>
         <InputForm
           apiProductList={apiProductList}
