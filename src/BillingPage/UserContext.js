@@ -1,10 +1,10 @@
-import React, { createContext, useState, useContext, useEffect } from 'react'
+import React, { createContext, useState, useContext} from 'react'
 
 const UserContext = createContext(null);
 
 export const UserProvider = ({ children }) => {
 
-    const [userObject, setUserObject] = useState({ name: "Demo User", id: 123 });
+    const [userObject, setUserObject] = useState({name: "Demo User", customerId: "C002", employeeId: "EMP001" });
 
     const isLogged = Boolean(userObject);
 

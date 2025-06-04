@@ -1,5 +1,6 @@
 import React from 'react';
 import './navStyle.css'
+import { Link } from 'react-router-dom';
 
 function SideNav() {
     return(
@@ -7,9 +8,9 @@ function SideNav() {
         <nav className='sidenav-container'>
             <p>Side Navigation</p>
             <ul>
-                <li>Home</li>
+                <li><Link to="/">Home</Link></li>
                 <li>Dashboard</li>
-                <li>others</li>
+                <li><Link to="/login">Login</Link></li>
             </ul>
         </nav>
 
