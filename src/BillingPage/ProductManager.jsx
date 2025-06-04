@@ -5,6 +5,8 @@ import ProductTable from './table/Table';
 import TotalAmount from './total/Total';
 import axios from 'axios';
 import { ApiError } from './StyledComponents';
+import {jsPDF} from 'jspdf';
+
 
 const ProjectManager = () => {
   const [cartProducts, setCartProducts] = useState([]);
@@ -176,6 +178,47 @@ const ProjectManager = () => {
     setSelectedProductFromApi(product || null);
   }, [apiProductList]);
 
+
+  const handleExportCartAsJson = () => {
+    const cartData = {
+      products: cartProducts,
+      summary: {
+        subTotal: parseFloat(subTotal.toFixed(2)),
+        taxTotal: parseFloat(taxTotal.toFixed(2)),
+        totalAmount: parseFloat(totalAmount.toFixed(2))
+      }
+    };
+    const cartJsonString = JSON.stringify(cartData, null, 2);
+    try {
+      let pdfInstance;
+      if (typeof jsPDF !== 'undefined') {
+        pdfInstance = new jsPDF();
+      } else {
+        alert('jsPDF library is not loaded for PDF download.');
+        return;
+      }
+      pdfInstance.setFontSize(10);
+      const lines = pdfInstance.splitTextToSize(cartJsonString, 180);
+      let yPosition = 10;
+      const pageHeight = pdfInstance.internal.pageSize.height - 20;
+      for (let i = 0; i < lines.length; i++) {
+        if (yPosition > pageHeight) {
+          pdfInstance.addPage();
+          yPosition = 10;
+        }
+        pdfInstance.text(lines[i], 10, yPosition);
+        yPosition += 7;
+      }
+      pdfInstance.save('cart-details.pdf');
+      alert('Cart PDF download initiated!');
+    } catch (error) {
+      alert('Error generating PDF. Check console.');
+      console.error('PDF Generation Error:', error);
+    }
+    console.log("Cart as JSON:");
+    console.log(cartJsonString);
+  };
+
   return (
     <div>
       {apiError && <ApiError>API Error: {apiError}</ApiError>}
@@ -196,11 +239,20 @@ const ProjectManager = () => {
           editingProductId={editingCartProductId}
         />
         <TotalAmount totalAmount={totalAmount} subTotal={subTotal} taxTotal={taxTotal}/>
+        <div style={{display: 'flex', justifyContent: 'center', gap:'15px', marginTop:'15px'}}>
         {cartProducts.length > 0 && (
-          <button onClick={handleClearAllCartProducts} style={{ display: 'block', margin: '20px auto', padding: '10px 20px', backgroundColor: '#dc3545', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
+          <button onClick={handleExportCartAsJson} style={{  padding: '10px 20px', backgroundColor: 'green', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
+            Proceed
+          </button>
+        )}
+        {cartProducts.length > 0 && (
+          <button onClick={handleClearAllCartProducts} style={{  padding: '10px 20px', backgroundColor: '#dc3545', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
             Clear All Cart Products
           </button>
         )}
+
+        </div>
+
       </main>
       
     </div>

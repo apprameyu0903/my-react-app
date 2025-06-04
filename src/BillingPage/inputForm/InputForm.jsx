@@ -56,7 +56,8 @@ const InputForm = ({ apiProductList, selectedProductFromApi, onProductSelect, on
     if (query.trim().length > 0) {
       const suggestions = apiProductList.filter(product => {
         const idMatch = product.id.toLowerCase().includes(query.toLowerCase());
-        return idMatch;
+        const nameMatch = product.name.toLowerCase().includes(query.toLowerCase());
+        return idMatch || nameMatch;
       });
       setFilteredSuggestions(suggestions);
       setShowSuggestions(true);
@@ -143,27 +144,27 @@ const InputForm = ({ apiProductList, selectedProductFromApi, onProductSelect, on
           )}
         </div>
 
-        <div className='input-group'>
+        <div className='input-group input-group-name'>
           <label htmlFor="productNameDisplay">Product Name</label>
           <input type="text" id="productNameDisplay" value={productName} readOnly style={{ backgroundColor: '#e9ecef' }} placeholder="Selected Product Name"/>
         </div>
 
-        <div className='input-group'>
+        <div className='input-group input-group-qty'>
           <label htmlFor="quantity">Qty</label>
           <input type="number" id="quantity" placeholder="Enter Qty" value={quantity} onChange={(e) => setQuantity(e.target.value)} min="1" step="1"/>
         </div>
 
-        <div className='input-group'>
+        <div className='input-group input-group-price'>
           <label htmlFor="pricePerUnitDisplay">Price/Unit</label>
           <input type="number" id="pricePerUnitDisplay" value={price} placeholder="Selected Price"/>
         </div>
 
-        <div className='input-group'>
+        <div className='input-group input-group-tax'>
           <label htmlFor="taxPercentageDisplay">Tax %</label>
           <input type="number" id="taxPercentageDisplay" value={tax} readOnly style={{ backgroundColor: '#e9ecef' }} placeholder="Selected Tax"/>
         </div>
 
-        <div className='input-group'>
+        <div className='input-group input-group-amount'>
           <label htmlFor="amount">Amount (incl. Tax)</label>
           <input type="number" id="amount" value={amount.toFixed(2)} readOnly style={{ backgroundColor: '#e9ecef' }}/>
         </div>
