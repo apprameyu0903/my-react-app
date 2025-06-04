@@ -8,12 +8,9 @@ export const UserProvider = ({ children }) => {
 
     const isLogged = Boolean(userObject);
 
-    useEffect(() => {
-        if (userObject && userObject.name !== "Demo User") {
-            setUserObject(null);
-        }
-    }, [userObject]);
-
+    if (userObject && userObject.name !== "Demo User"){
+        setUserObject(null);
+    }
 
     const contextValue = { userObject, isLogged};
 

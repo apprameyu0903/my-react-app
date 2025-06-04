@@ -2,6 +2,8 @@
   margin-top: 3vh;
   border-radius: 1vw;
   overflow-x: auto;
+  max-height: 35vh;
+  overflow-y: auto;
 }
 
 .product-table {
@@ -9,16 +11,16 @@
   padding-right: clamp(5%, 7.5%, 10%);
   border-collapse: collapse;
   width: 100%;
-  min-width: 600px;
+  min-width: 500px;
   box-sizing: border-box;
-  border: 2px solid black;
+  background-color: #fff;
 }
 
 .product-table th,
 .product-table td {
-  padding: clamp(1vh, 1.5vh, 1.8vh) clamp(1vw, 1.5vw, 2vw);
+  padding: clamp(0.5vh, 1vh, 1.2vh) clamp(0.5vw, 1vw, 1.5vw);
   text-align: left;
-  font-size: clamp(14px, 2vw, 17px);
+  font-size: clamp(12px, 1.8vw, 14px);
   word-wrap: break-word;
 }
 
@@ -26,14 +28,17 @@
   background-color: #374151;
   color: #ffffff;
   font-weight: 600;
-  font-size: clamp(16px, 2.5vw, 20px);
+  font-size: clamp(14px, 2.5vw, 18px);
   text-transform: uppercase;
+  position: sticky;
+  top: 0;
+  z-index:1;
 }
 
 .no-products-message {
-  padding: 2vh;
+  padding: 1.5vh;
   text-align: center;
   color: #6c757d;
   font-style: italic;
-  font-size: clamp(1.5vw, 2.2vw, 2.5vw);
+  font-size: clamp(1.2vw, 2vw, 2.2vw);
 }

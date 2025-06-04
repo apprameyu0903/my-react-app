@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import './rowStyle.css'
 
-const ProductRow = ({product, onDeleteProduct, onEditProduct, onSaveProduct, onCancelEdit, isEditing }) => {
+const ProductRow = ({product, sNo, onDeleteProduct, onEditProduct, onSaveProduct, onCancelEdit, isEditing }) => {
 
     const [editedName, setEditedName] = useState(product.name);
     const [editedQty, setEditedQty] = useState(product.qty.toString());
@@ -49,6 +49,7 @@ const ProductRow = ({product, onDeleteProduct, onEditProduct, onSaveProduct, onC
 
     return (
    <tr className='product-row editing'>
+                <td>{sNo}</td>
                 <td>{product.name}</td>
                 <td>
                     <input

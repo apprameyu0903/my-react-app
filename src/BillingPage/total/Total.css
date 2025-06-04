@@ -1,16 +1,20 @@
 .total-container {
-  margin-top: 4vh;
-  padding: clamp(1.8vh, 2.5vh, 2.8vh) clamp(2vw, 3vw, 3.5vw);
+  display: flex;
+  margin-top: 2vh;
+  padding: clamp(1vh, 1.5vh, 1.8vh) clamp(1.5vw, 2vw, 2.5vw);
   background-color: #ffffff;
   border: 1px solid #dfe4ea;
   border-radius: clamp(0.8vw, 1vw, 1.2vw);
   box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-  text-align: right;
+  text-align: center;
+  justify-content: center;
+  gap: clamp(15px, 3vw, 30px);
+  flex-wrap: wrap;
 }
 
 .total-container p {
   margin: 0;
-  font-size: clamp(1.2em, 3vw, 1.7em);
+  font-size: clamp(0.9em, 2.2vw, 1.1em);
   font-weight: bold;
   color: #212529;
 }

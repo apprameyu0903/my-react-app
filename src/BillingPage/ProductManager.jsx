@@ -233,9 +233,7 @@ const ProjectManager = () => {
         <ProductTable
           products={cartProducts}
           onDeleteProduct={handleDeleteProductFromCart}
-          onEditProduct={handleSetEditCartProduct}
           onSaveProduct={handleSaveCartProduct}
-          onCancelEdit={handleCancelEditCartProduct}
           editingProductId={editingCartProductId}
         />
         <TotalAmount totalAmount={totalAmount} subTotal={subTotal} taxTotal={taxTotal}/>

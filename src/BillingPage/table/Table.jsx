@@ -10,6 +10,7 @@ const ProductTable = ({products, onDeleteProduct, onEditProduct, onSaveProduct, 
         <table className='product-table'>
             <thead className='product-table'>
                 <tr>
+                    <th>S.No</th>
                     <th>Product Name</th>
                     <th>Quantity</th>
                     <th>Price/Unit</th>
@@ -25,8 +26,7 @@ const ProductTable = ({products, onDeleteProduct, onEditProduct, onSaveProduct, 
                     <tr>
                     <td colSpan = "8" style={{textAlign : 'center'}}>{message}</td>
                     </tr>) :
-                (products.map((product) => <ProductRow key = {product.id} product={product} onDeleteProduct={onDeleteProduct} onEditProduct={onEditProduct}
-                            onSaveProduct={onSaveProduct} onCancelEdit={onCancelEdit} isEditing={editingProductId === product.id}/>))}
+                (products.map((product, index) => <ProductRow key = {product.id} product={product} sNo={index + 1} onDeleteProduct={onDeleteProduct} onSaveProduct={onSaveProduct} isEditing={editingProductId === product.id}/>))}
             </tbody>
         </table>
         </div>
