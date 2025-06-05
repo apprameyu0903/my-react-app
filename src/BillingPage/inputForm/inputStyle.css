@@ -85,29 +85,6 @@
 }
 
 .product-search-group {
-  position: relative; 
-}
-
-.suggestions-list {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-  border: 1px solid #ccc;
-  border-top: none;
-  position: absolute;
-  width: 100%; 
-  background-color: white;
-  z-index: 1000;
-  max-height: 200px;
-  overflow-y: auto;
-  box-sizing: border-box;
-}
-
-.suggestions-list li {
-  padding: 8px 12px;
-  cursor: pointer;
-}
-
-.suggestions-list li:hover {
-  background-color: #f0f0f0;
+  position: relative;
+  color: black; 
 }

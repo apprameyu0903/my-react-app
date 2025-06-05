@@ -2,6 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import './inputStyle.css';
 import { AddToCartButton } from '../StyledComponents';
 import { useUser } from '../UserContext';
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
 
 const InputForm = ({ apiProductList, selectedProductFromApi, onProductSelect, onAddProduct }) => {
   const [productIdSearchText, setProductIdSearchText] = useState('');
@@ -122,26 +124,35 @@ const InputForm = ({ apiProductList, selectedProductFromApi, onProductSelect, on
     <form onSubmit={handleSubmit} className='input-form'>
       <div className='form-row'>
         <div className='input-group product-search-group'>
-          <label htmlFor="apiProductSearch">Search Product (ID/Name)</label>
-          <input
-            type="text"
-            id="apiProductSearch"
-            placeholder="Type Product ID or Name"
-            value={productIdSearchText}
-            onChange={handleProductIdSearchChange}
-            onFocus={() => productIdSearchText && filteredSuggestions.length > 0 && setShowSuggestions(true)}
-            onBlur={() => setTimeout(() => setShowSuggestions(false), 150)} 
-            autoComplete="off"
-          />
-          {showSuggestions && filteredSuggestions.length > 0 && (
-            <ul className="suggestions-list">
-              {filteredSuggestions.map((p, index) => (
-                <li key={p.id || `suggestion-${index}`} onClick={() => handleSuggestionClick(p.id)}>
-                  {p.name} (ID: {p.id})
-                </li>
-              ))}
-            </ul>
-          )}
+          <label htmlFor="productNameDisplay">Search Product (Name /Id)</label>
+          <Autocomplete
+            options={apiProductList || []} 
+            getOptionLabel={(option) => option.name ? `${option.name} (ID: ${option.id})` : ''}
+            isOptionEqualToValue={(option, value) => option && value && option.id === value.id}
+            value={selectedProductFromApi || null} 
+            onChange={(event, newValue) => {
+              onProductSelect(newValue ? newValue.id : '');
+            }}
+            inputValue={productIdSearchText}
+            onInputChange={(event, newInputValue, reason) => {
+              if (reason === 'input') {
+                setProductIdSearchText(newInputValue);
+              } else if (reason === 'clear' || (reason === 'reset' && !newInputValue && selectedProductFromApi) ) {
+                setProductIdSearchText('');
+                if (selectedProductFromApi) { 
+                    onProductSelect('');
+                }
+              }
+            }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                variant="outlined"
+                style={{ width: '100%' }} 
+                size="medium" 
+              />
+            )}
+            />
         </div>
 
         <div className='input-group input-group-name'>
