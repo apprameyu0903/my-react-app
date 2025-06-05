@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import './inputStyle.css';
 import { AddToCartButton } from '../StyledComponents';
 import { useUser } from '../UserContext';
@@ -13,9 +13,14 @@ const InputForm = ({ apiProductList, selectedProductFromApi, onProductSelect, on
   const [tax, setTax] = useState('');
   const [amount, setAmount] = useState(0);
   const { isLogged } = useUser(); 
+  const searchInputRef = useRef(null);
 
-  const [filteredSuggestions, setFilteredSuggestions] = useState([]);
-  const [showSuggestions, setShowSuggestions] = useState(false);
+   useEffect(() => {
+    if (searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
+  }, []);
+
   useEffect(() => {
     if (selectedProductFromApi) {
       setProductIdSearchText(selectedProductFromApi.id || '');
@@ -49,38 +54,6 @@ const InputForm = ({ apiProductList, selectedProductFromApi, onProductSelect, on
   useEffect(() => {
     calculateAndUpdateAmount();
   }, [calculateAndUpdateAmount]);
-
-
-  const handleProductIdSearchChange = (e) => {
-    const query = e.target.value;
-    setProductIdSearchText(query);
-
-    if (query.trim().length > 0) {
-      const suggestions = apiProductList.filter(product => {
-        const idMatch = product.id.toLowerCase().includes(query.toLowerCase());
-        const nameMatch = product.name.toLowerCase().includes(query.toLowerCase());
-        return idMatch || nameMatch;
-      });
-      setFilteredSuggestions(suggestions);
-      setShowSuggestions(true);
-
-    } else {
-      setFilteredSuggestions([]);
-      setShowSuggestions(false);
-      onProductSelect(''); 
-    }
-  };
-
-  const handleSuggestionClick = (productIdFromSuggestion) => {
-    if (typeof productIdFromSuggestion === 'undefined' || productIdFromSuggestion === null) {
-        console.error("handleSuggestionClick called with undefined or null productId.");
-        return;
-    }
-    setProductIdSearchText(productIdFromSuggestion); 
-    onProductSelect(productIdFromSuggestion);     
-    setShowSuggestions(false);
-    setFilteredSuggestions([]);
-  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -118,9 +91,17 @@ const InputForm = ({ apiProductList, selectedProductFromApi, onProductSelect, on
       amount: parseFloat(amount.toFixed(2))
     });
 
+    
+
+    setProductIdSearchText('');
+    if (searchInputRef.current) {
+        searchInputRef.current.focus(); 
+    }
+
   };
 
   return (
+    
     <form onSubmit={handleSubmit} className='input-form'>
       <div className='form-row'>
         <div className='input-group product-search-group'>

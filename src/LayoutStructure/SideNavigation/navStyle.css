@@ -1,6 +1,25 @@
-.sidenav-container {
-  width: 10%;
-  background-color: #669bbc;
-  padding: 15px;
-  font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+.menu-heading {
+
+  padding-right: 30px;
+  padding-left: 30px;
+
+}
+
+.sidenav-drawer-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  padding-left: 15px;
+  padding-right: 15px;
+  box-sizing: border-box;
+  height: 100%;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.menu-heading {
+  margin-top: 8px;
+  margin-bottom: 20px;
+  text-align: center;
 }

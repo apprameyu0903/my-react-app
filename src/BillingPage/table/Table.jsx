@@ -2,7 +2,7 @@ import React from 'react';
 import ProductRow from '../row/Row';
 import './tableStyle.css'
 
-const ProductTable = ({products, onDeleteProduct, onEditProduct, onSaveProduct, onCancelEdit, editingProductId}) => {
+const ProductTable = ({products, onDeleteProduct, onSaveProduct, editingProductId}) => {
     
     const message = 'No Products added yet. Add some products';
     return (

@@ -15,5 +15,23 @@ export const AddToCartButton = styled.button`
   cursor: pointer;
 
   &:hover {
-    background-color: #5a32a3;
+    background-color:rgb(50, 73, 163);
   }`
+
+  export const MenuButton = styled.button`
+  
+  padding: clamp(0.6rem, 1.5vh, 0.8rem) clamp(1rem, 2.5vw, 1.5rem);
+  background-color: #6f42c1;
+  color: white;
+  border: none;
+  border-radius: clamp(0.3rem, 0.8vw, 0.5rem);
+  font-size: clamp(0.85rem, 2vw, 1rem);
+  font-weight: 500;
+  min-height: clamp(2.5rem, 5vh, 3rem);
+  margin-top: clamp(1rem, 1vh, 0.5rem); 
+  cursor: pointer;
+
+  &:hover {
+    background-color:rgb(50, 73, 163);
+  }
+`
