@@ -1,6 +1,8 @@
-import React, {useSelector} from 'react';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import ProductRow from '../row/Row';
 import './tableStyle.css'
+
 
 const ProductTable = ({onDeleteProduct, onSaveProduct, editingProductId}) => {
 

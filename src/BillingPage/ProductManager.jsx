@@ -211,7 +211,6 @@ const ProjectManager = () => {
           key={selectedProductFromApi ? selectedProductFromApi.id : 'empty-form'} 
         />
         <ProductTable
-          products={cartProducts}
           onDeleteProduct={handleDeleteProductFromCart}
           onSaveProduct={handleSaveCartProduct}
           editingProductId={editingCartProductId}
