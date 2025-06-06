@@ -1,8 +1,10 @@
-import React from 'react';
+import React, {useSelector} from 'react';
 import ProductRow from '../row/Row';
 import './tableStyle.css'
 
-const ProductTable = ({products, onDeleteProduct, onSaveProduct, editingProductId}) => {
+const ProductTable = ({onDeleteProduct, onSaveProduct, editingProductId}) => {
+
+    const products = useSelector(state => state.cart.cartProducts);
     
     const message = 'No Products added yet. Add some products';
     return (

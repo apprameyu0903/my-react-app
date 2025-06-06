@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import './inputStyle.css';
 import { AddToCartButton } from '../StyledComponents';
-import { useUser } from '../UserContext';
+import { useUser  } from '../UserContext';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
+import { useDispatch } from 'react-redux';
+import { addToCart } from '../../redux/cartActions'; 
 
 const InputForm = ({ apiProductList, selectedProductFromApi, onProductSelect, onAddProduct }) => {
   const [productIdSearchText, setProductIdSearchText] = useState('');
@@ -14,6 +16,7 @@ const InputForm = ({ apiProductList, selectedProductFromApi, onProductSelect, on
   const [amount, setAmount] = useState(0);
   const { isLogged } = useUser(); 
   const searchInputRef = useRef(null);
+  const dispatch = useDispatch(); 
 
    useEffect(() => {
     if (searchInputRef.current) {
@@ -82,17 +85,24 @@ const InputForm = ({ apiProductList, selectedProductFromApi, onProductSelect, on
       return;
     }
 
-    onAddProduct({
+    // onAddProduct({
+    //   databaseProductId: selectedProductFromApi ? selectedProductFromApi.id : null,
+    //   name: productName,
+    //   qty: qtyNum,
+    //   price: priceNum,
+    //   tax: taxNum,
+    //   amount: parseFloat(amount.toFixed(2))
+    // });
+
+    dispatch(addToCart({ 
       databaseProductId: selectedProductFromApi ? selectedProductFromApi.id : null,
       name: productName,
       qty: qtyNum,
       price: priceNum,
       tax: taxNum,
-      amount: parseFloat(amount.toFixed(2))
-    });
+  }));
 
-    
-
+  
     setProductIdSearchText('');
     if (searchInputRef.current) {
         searchInputRef.current.focus(); 

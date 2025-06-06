@@ -5,10 +5,13 @@ import { UserProvider } from './BillingPage/UserContext';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Login from './Login/Login';
 import Home from './Home/Home';
+import { Provider } from 'react-redux';
+import store from './redux/store';
 
 function App() {
 
   return (
+    <Provider store={store}>
     <UserProvider >
       <BrowserRouter>
       <Layout>
@@ -21,6 +24,7 @@ function App() {
       </Layout>
     </BrowserRouter>
     </UserProvider>
+    </Provider>
   );
 }
 
