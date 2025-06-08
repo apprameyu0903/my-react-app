@@ -1,7 +1,9 @@
 import React from 'react';
 import './Total.css'
+import { useSelector } from 'react-redux';
 
-const TotalAmount = ({totalAmount, subTotal, taxTotal}) => {
+const TotalAmount = () => {
+  const {totalAmount , subTotal , taxTotal} = useSelector(state => state.cart);
     if (totalAmount === 0) return null;
 
     return (

@@ -4,10 +4,11 @@ import { AddToCartButton } from '../StyledComponents';
 import { useUser  } from '../UserContext';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
-import { useDispatch } from 'react-redux';
-import { addToCart } from '../../redux/cartActions'; 
+import { useDispatch , useSelector} from 'react-redux';
+import { addToCart } from '../../redux/cartReducer'; 
+import { selectProduct } from '../../redux/productListReducer';
 
-const InputForm = ({ apiProductList, selectedProductFromApi, onProductSelect, onAddProduct }) => {
+const InputForm = () => {
   const [productIdSearchText, setProductIdSearchText] = useState('');
   const [productName, setProductName] = useState('');
   const [quantity, setQuantity] = useState('');
@@ -16,7 +17,9 @@ const InputForm = ({ apiProductList, selectedProductFromApi, onProductSelect, on
   const [amount, setAmount] = useState(0);
   const { isLogged } = useUser(); 
   const searchInputRef = useRef(null);
+  const { products , selectedProduct } = useSelector(state => state.products);
   const dispatch = useDispatch(); 
+
 
    useEffect(() => {
     if (searchInputRef.current) {
@@ -25,11 +28,11 @@ const InputForm = ({ apiProductList, selectedProductFromApi, onProductSelect, on
   }, []);
 
   useEffect(() => {
-    if (selectedProductFromApi) {
-      setProductIdSearchText(selectedProductFromApi.id || '');
-      setProductName(selectedProductFromApi.name || '');
-      setPrice(selectedProductFromApi.originalPrice !== undefined ? selectedProductFromApi.originalPrice.toString() : '');
-      setTax(selectedProductFromApi.originalTaxPercent !== undefined ? selectedProductFromApi.originalTaxPercent.toString() : '');
+    if (selectedProduct) {
+      setProductIdSearchText(selectedProduct.id || '');
+      setProductName(selectedProduct.name || '');
+      setPrice(selectedProduct.originalPrice !== undefined ? selectedProduct.originalPrice.toString() : '');
+      setTax(selectedProduct.originalTaxPercent !== undefined ? selectedProduct.originalTaxPercent.toString() : '');
       setQuantity('1'); 
     } else {
       setProductIdSearchText('');
@@ -38,7 +41,7 @@ const InputForm = ({ apiProductList, selectedProductFromApi, onProductSelect, on
       setTax('');
       setQuantity('');
     }
-  }, [selectedProductFromApi]);
+  }, [selectedProduct]);
 
   const calculateAndUpdateAmount = useCallback(() => {
     const qtyNum = parseFloat(quantity);
@@ -57,6 +60,10 @@ const InputForm = ({ apiProductList, selectedProductFromApi, onProductSelect, on
   useEffect(() => {
     calculateAndUpdateAmount();
   }, [calculateAndUpdateAmount]);
+
+    const handleProductSelect = (event, newValue) => {
+    dispatch(selectProduct(newValue));
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -95,7 +102,7 @@ const InputForm = ({ apiProductList, selectedProductFromApi, onProductSelect, on
     // });
 
     dispatch(addToCart({ 
-      databaseProductId: selectedProductFromApi ? selectedProductFromApi.id : null,
+      databaseProductId: selectedProduct? selectedProduct.id : null,
       name: productName,
       qty: qtyNum,
       price: priceNum,
@@ -117,21 +124,19 @@ const InputForm = ({ apiProductList, selectedProductFromApi, onProductSelect, on
         <div className='input-group product-search-group'>
           <label htmlFor="productNameDisplay">Search Product (Name /Id)</label>
           <Autocomplete
-            options={apiProductList || []} 
+            options={products || []} 
             getOptionLabel={(option) => option.name ? `${option.name} (ID: ${option.id})` : ''}
             isOptionEqualToValue={(option, value) => option && value && option.id === value.id}
-            value={selectedProductFromApi || null} 
-            onChange={(event, newValue) => {
-              onProductSelect(newValue ? newValue.id : '');
-            }}
+            value={selectedProduct || null} 
+            onChange={handleProductSelect}
             inputValue={productIdSearchText}
             onInputChange={(event, newInputValue, reason) => {
               if (reason === 'input') {
                 setProductIdSearchText(newInputValue);
-              } else if (reason === 'clear' || (reason === 'reset' && !newInputValue && selectedProductFromApi) ) {
+              } else if (reason === 'clear' || (reason === 'reset' && !newInputValue && selectedProduct) ) {
                 setProductIdSearchText('');
-                if (selectedProductFromApi) { 
-                    onProductSelect('');
+                if (selectedProduct) { 
+                    dispatch(selectProduct(null))
                 }
               }
             }}

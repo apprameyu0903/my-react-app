@@ -4,7 +4,7 @@ const UserContext = createContext(null);
 
 export const UserProvider = ({ children }) => {
 
-    const [userObject, setUserObject] = useState({name: "Demo User", customerId: "C002", employeeId: "EMP001" });
+    const [userObject, setUserObject] = useState({name: "Demo User", employeeId: "EMP002" });
 
     const isLogged = Boolean(userObject);
 

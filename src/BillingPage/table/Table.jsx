@@ -4,7 +4,7 @@ import ProductRow from '../row/Row';
 import './tableStyle.css'
 
 
-const ProductTable = ({onDeleteProduct, onSaveProduct, editingProductId}) => {
+const ProductTable = () => {
 
     const products = useSelector(state => state.cart.cartProducts);
     
@@ -30,7 +30,7 @@ const ProductTable = ({onDeleteProduct, onSaveProduct, editingProductId}) => {
                     <tr>
                     <td colSpan = "8" style={{textAlign : 'center'}}>{message}</td>
                     </tr>) :
-                (products.map((product, index) => <ProductRow key = {product.id} product={product} sNo={index + 1} onDeleteProduct={onDeleteProduct} onSaveProduct={onSaveProduct} isEditing={editingProductId === product.id}/>))}
+                (products.map((product, index) => <ProductRow key = {product.id} product={product} sNo={index + 1}/>))}
             </tbody>
         </table>
         </div>

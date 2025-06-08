@@ -1,16 +1,24 @@
 import React, {useState, useEffect} from 'react';
 import './rowStyle.css'
+import { useDispatch } from 'react-redux';
+import { deleteCartItem , updateCartItem } from '../../redux/cartReducer';
 
-const ProductRow = ({product, sNo, onDeleteProduct, onEditProduct, onSaveProduct, onCancelEdit, isEditing }) => {
+
+const ProductRow = ({product, sNo}) => {
 
     const [editedName, setEditedName] = useState(product.name);
     const [editedQty, setEditedQty] = useState(product.qty.toString());
     const [editedPrice, setEditedPrice] = useState(product.price.toString());
+    const dispatch = useDispatch();
     useEffect(() => {
         setEditedName(product.name);
         setEditedQty(product.qty.toString());
         setEditedPrice(product.price.toString());
-    }, [product, isEditing]);
+    }, [product]);
+
+    const handleDeleteProductFromCart = (cartItemId) => {
+        dispatch(deleteCartItem(cartItemId));
+    }
 
     const handleSave = () => {
         const qtyNum = parseFloat(editedQty);
@@ -29,12 +37,11 @@ const ProductRow = ({product, sNo, onDeleteProduct, onEditProduct, onSaveProduct
             return;
         }
 
-        onSaveProduct({
+        dispatch(updateCartItem({
             ...product,
-            name: editedName,
-            qty: qtyNum,
-            price: priceNum,
-        });
+            qty: editedQty,
+            price: editedPrice,
+        }));
     };
 
     const handleInputKeyDown = (event) => {
@@ -75,7 +82,7 @@ const ProductRow = ({product, sNo, onDeleteProduct, onEditProduct, onSaveProduct
                 <td>{product.tax.toFixed(2)}</td>
                 <td>{taxAmount.toFixed(2)}</td>
                 <td>{currentAmount.toFixed(2)}</td>
-                <td><button onClick={() => onDeleteProduct(product.cartItemId)}>Delete</button></td>
+                <td><button onClick={() => handleDeleteProductFromCart(product.cartItemId)}>Delete</button></td>
             </tr>
     );
 }
