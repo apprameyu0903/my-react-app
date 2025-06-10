@@ -4,11 +4,10 @@ import ProductRow from '../row/Row';
 import './tableStyle.css'
 
 
-const ProductTable = () => {
+const ProductTable = ({products}) => {
 
-    const products = useSelector(state => state.cart.cartProducts);
-    
-    const message = 'No Products added yet. Add some products';
+    products = useSelector(state => state.cart.cartProducts);
+    const message = "Add items, the cart is empty";
     return (
         <div className='product-table-container'>
         <table className='product-table'>
@@ -30,7 +29,7 @@ const ProductTable = () => {
                     <tr>
                     <td colSpan = "8" style={{textAlign : 'center'}}>{message}</td>
                     </tr>) :
-                (products.map((product, index) => <ProductRow key = {product.id} product={product} sNo={index + 1}/>))}
+                (products.map((product, index) => <ProductRow key = {product.cartItemId} product={product} sNo={index + 1}/>))}
             </tbody>
         </table>
         </div>

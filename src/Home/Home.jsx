@@ -13,7 +13,7 @@ const Home = () => {
                 </div>
 
                 <div className="action-block">
-                    <BigButton>Reports Page</BigButton>
+                    <Link to="/reports"><BigButton>Reports Page</BigButton></Link>
                 </div>
             </div>
 

@@ -1,10 +1,57 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice , createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
+
+export const getCarts = createAsyncThunk(
+  'carts/getCarts',
+  async () => {
+    const response = await axios.get('http://localhost:5050/api/invoice');
+    const responseData = response.data;
+    const formattedCartData = responseData.map(cart => {
+      return {
+        invoiceId : cart.invoiceId,
+        invoiceNumber : cart.invoiceNumber,
+        customerId : cart.customerId,
+        empId : cart.employeeId,
+        tAmount : cart.totalAmount,
+        dueDate : cart.dueDate,
+        invoiceDate : cart.invoiceDate
+      }
+    }).filter(cart => cart !== null);
+    return formattedCartData;
+  }
+
+)
+
+
+export const getInvoiceById = createAsyncThunk(
+  'carts/getInvoiceById',
+  async (invoiceId) => {
+    const response = await axios.get(`http://localhost:5050/api/invoice/${invoiceId}`);
+    console.log(response.data);
+    return response.data;
+  }
+);
+
+
+export const updateInvoice = createAsyncThunk(
+  'carts/updateInvoice',
+  async (invoiceData, { dispatch }) => {
+    const { invoiceId, ...payload } = invoiceData;
+    const response = await axios.put(`http://localhost:5050/api/invoice/${invoiceId}`, payload);
+    dispatch(getCarts());
+    return response.data;
+  }
+);
+
+
 
 const initialState = {
+  carts : [],
   cartProducts: [],
   subTotal: 0,
   taxTotal: 0,
   totalAmount: 0,
+  currentInvoice: null
 };
 
 const updateTotalAmounts = (state) => {
@@ -66,6 +113,27 @@ const cartSlice = createSlice({
       updateTotalAmounts(state);
     },
   },
+  extraReducers: (builder) => {
+      builder
+          .addCase(getCarts.fulfilled, (state, action) => {
+              state.carts = action.payload;
+          })
+          .addCase(getInvoiceById.fulfilled, (state, action) => {
+            const { invoiceDetails } = action.payload;
+            state.currentInvoice = invoiceDetails;
+            const formattedItems = (invoiceDetails.items || []).map(item => ({
+            dbProductId: item.productId,
+            name: item.name,
+            qty: item.quantity,
+            price: item.price,
+            tax: item.tax,
+            cartItemId: `${Date.now()}-${Math.random()}` 
+          }));
+
+            state.cartProducts = formattedItems;
+            updateTotalAmounts(state);
+          })
+    }
 });
 
 export const { addToCart, updateCartItem, deleteCartItem, clearCart } = cartSlice.actions;

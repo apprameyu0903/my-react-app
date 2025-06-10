@@ -11,7 +11,6 @@ export const getCustomers = createAsyncThunk(
             console.warn("API did not return an array for customers, wrapping in an array:", responseData);
             responseData = [responseData];
         }
-        console.log(responseData);
         const formattedCustomerList = responseData.map(customer => {
             if (!customer || typeof customer.customerId === 'undefined' || customer.customerId === null ||
                 typeof customer.customerName === 'undefined' || customer.customerName === null || customer.customerMobile === null) {
@@ -64,7 +63,7 @@ export const customerSlice = createSlice({
         customers: [],
         selectedCustomer: null,
         customerStatus: 'idle',
-        error: null
+        error: null,
     },
     reducers: {
         selectCustomer : (state , action) => {
@@ -72,14 +71,13 @@ export const customerSlice = createSlice({
         },
         clearCustomerSelection: (state) => {
             state.selectedCustomer = null;
-        }
+        },
     },
     extraReducers: (builder) => {
         builder
             .addCase(getCustomers.fulfilled, (state, action) => {
                 state.customerStatus = 'succeeded';
                 state.customers = action.payload;
-                console.log(action.payload);
             })
             .addCase(getCustomers.rejected, (state, action) => {
                 state.customerStatus = 'failed';

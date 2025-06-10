@@ -6,20 +6,21 @@ import TotalAmount from './total/Total';
 import axios from 'axios';
 import CustomerForm from './customerForm/CustomerForm';
 import { ApiError } from './StyledComponents';
-import {clearCart } from '../redux/cartReducer';
+import {clearCart , updateInvoice} from '../redux/cartReducer';
 import { getProducts } from '../redux/productListReducer';
-import { getCustomers } from '../redux/customerReducer';
+import { getCustomers , selectCustomer } from '../redux/customerReducer';
 import { clearCustomerSelection } from '../redux/customerReducer';
 import { clearProducts } from '../redux/productListReducer';
 import { useDispatch, useSelector } from 'react-redux';
 
 const ProjectManager = () => {
   const cartProducts = useSelector(state => state.cart.cartProducts);
-  const {selectedCustomer} = useSelector(state => state.customers);
+  const {selectedCustomer , customers} = useSelector(state => state.customers);
   const { productStatus, error: apiError } = useSelector(state => state.products);
   const user = useSelector(state => state.users.user);
   const { customerStatus, error: customerError } = useSelector(state => state.customers);
   const dispatch = useDispatch();
+  const { currentInvoice } = useSelector(state => state.cart);
 
   useEffect(() => {
   if (productStatus === 'idle') {
@@ -32,6 +33,15 @@ const ProjectManager = () => {
           dispatch(getCustomers());
       }
   }, [customerStatus , dispatch]);
+
+   useEffect(() => {
+        if (currentInvoice && customers.length > 0) {
+            const customerForInvoice = customers.find(c => c.customerId === currentInvoice.customerId);
+            if (customerForInvoice) {
+                dispatch(selectCustomer(customerForInvoice));
+            }
+        }
+    }, [currentInvoice, customers, dispatch]);
 
   const handleClearAllCartProducts = useCallback(() => {
     if (window.confirm("Are you sure you want to clear all products from the cart?")) {
@@ -53,23 +63,25 @@ const ProjectManager = () => {
 
     });
 
-    const jsonData = {
-      customerId : customerId,
-      employeeId : employeeId,
-      items : items
-    }
-
-    const cartJson = JSON.stringify(jsonData);
-    alert("JSON printed in the console");
-    console.log(cartJson);
+    const invoiceData = {
+      customerId: customerId,
+      employeeId: employeeId,
+      items: items
+    };
 
     try {
-      const response = await axios.post('http://localhost:5050/api/invoice', jsonData);
-      alert("Invoice submitted successfully!");
-      console.log("Server response:", response.data);
-      dispatch(clearCart());
-      dispatch(clearCustomerSelection());
-      dispatch(clearProducts());
+      if (currentInvoice) {
+          await dispatch(updateInvoice({ ...invoiceData, invoiceId: currentInvoice.invoiceId })).unwrap();
+          alert("Invoice updated successfully!");
+      } else {
+          const response = await axios.post('http://localhost:5050/api/invoice', invoiceData);
+          alert("Invoice submitted successfully!");
+          console.log("Server response:", response.data);
+      }
+
+            dispatch(clearCart());
+            dispatch(clearCustomerSelection());
+            dispatch(clearProducts());
 
     } catch (error) {
       console.error("Failed to submit invoice:", error);
@@ -87,13 +99,13 @@ const ProjectManager = () => {
       <main>
         <CustomerForm />
         <InputForm/>
-        <ProductTable/>
+        <ProductTable />
         <TotalAmount/>
         <div style={{display: 'flex', justifyContent: 'center', gap:'15px', marginTop:'15px'}}>
         {cartProducts.length > 0 && (
-          <button onClick={handleExportCartAsJson} style={{  padding: '10px 20px', backgroundColor: 'green', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
-            Proceed
-          </button>
+            <button onClick={handleExportCartAsJson} style={{ padding: '10px 20px', backgroundColor: 'green', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
+                {currentInvoice ? 'Update Invoice' : 'Proceed'}
+            </button>
         )}
         {cartProducts.length > 0 && (
           <button onClick={handleClearAllCartProducts} style={{  padding: '10px 20px', backgroundColor: '#dc3545', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
