@@ -1,0 +1,27 @@
+.add-customer-form-container {
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.add-customer-form-container h2 {
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.form-fields-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 15px;
+}
+
+.form-field {
+    flex-grow: 1;
+}
+
+.add-customer-button {
+    height: 20px
+}

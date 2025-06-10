@@ -6,18 +6,19 @@ import TotalAmount from './total/Total';
 import axios from 'axios';
 import CustomerForm from './customerForm/CustomerForm';
 import { ApiError } from './StyledComponents';
-import { useUser } from './UserContext';
 import {clearCart } from '../redux/cartReducer';
 import { getProducts } from '../redux/productListReducer';
 import { getCustomers } from '../redux/customerReducer';
+import { clearCustomerSelection } from '../redux/customerReducer';
+import { clearProducts } from '../redux/productListReducer';
 import { useDispatch, useSelector } from 'react-redux';
 
 const ProjectManager = () => {
   const cartProducts = useSelector(state => state.cart.cartProducts);
   const {selectedCustomer} = useSelector(state => state.customers);
   const { productStatus, error: apiError } = useSelector(state => state.products);
+  const user = useSelector(state => state.users.user);
   const { customerStatus, error: customerError } = useSelector(state => state.customers);
-  const {userObject} = useUser();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -40,7 +41,7 @@ const ProjectManager = () => {
 
   const handleExportCartAsJson = async () => {
     
-    const employeeId = userObject ? userObject.employeeId : "E_uk";
+    const employeeId = user ? user.userId : 'null';
     const customerId = selectedCustomer.customerId;
     const items = cartProducts.map(p => {
 
@@ -67,6 +68,8 @@ const ProjectManager = () => {
       alert("Invoice submitted successfully!");
       console.log("Server response:", response.data);
       dispatch(clearCart());
+      dispatch(clearCustomerSelection());
+      dispatch(clearProducts());
 
     } catch (error) {
       console.error("Failed to submit invoice:", error);

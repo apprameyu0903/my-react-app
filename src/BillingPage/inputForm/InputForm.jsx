@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import './inputStyle.css';
 import { AddToCartButton } from '../StyledComponents';
-import { useUser  } from '../UserContext';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import { useDispatch , useSelector} from 'react-redux';
@@ -15,17 +14,8 @@ const InputForm = () => {
   const [price, setPrice] = useState('');
   const [tax, setTax] = useState('');
   const [amount, setAmount] = useState(0);
-  const { isLogged } = useUser(); 
-  const searchInputRef = useRef(null);
   const { products , selectedProduct } = useSelector(state => state.products);
   const dispatch = useDispatch(); 
-
-
-   useEffect(() => {
-    if (searchInputRef.current) {
-      searchInputRef.current.focus();
-    }
-  }, []);
 
   useEffect(() => {
     if (selectedProduct) {
@@ -67,10 +57,6 @@ const InputForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!isLogged) {
-      alert("Please log in to add products to the cart.");
-    return;
-    }
     const qtyNum = parseFloat(quantity);
     const priceNum = parseFloat(price);
     const taxNum = parseFloat(tax) || 0; 
@@ -108,12 +94,6 @@ const InputForm = () => {
       price: priceNum,
       tax: taxNum,
   }));
-
-  
-    setProductIdSearchText('');
-    if (searchInputRef.current) {
-        searchInputRef.current.focus(); 
-    }
 
   };
 
@@ -175,12 +155,7 @@ const InputForm = () => {
           <label htmlFor="amount">Amount (incl. Tax)</label>
           <input type="number" id="amount" value={amount.toFixed(2)} readOnly style={{ backgroundColor: '#e9ecef' }}/>
         </div>
-        <AddToCartButton type="submit" disabled={!isLogged}>{isLogged ? "Add to Cart" : "Login to Add"}</AddToCartButton>
-        {!isLogged && (
-        <p style={{ color: 'red', textAlign: 'center', marginTop: '10px', width: '100%' }}>
-          You must be logged in to add items to the cart.
-        </p>
-      )}
+        <AddToCartButton type="submit">Add to Cart</AddToCartButton>
       </div>
     </form>
   );

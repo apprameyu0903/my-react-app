@@ -30,6 +30,33 @@ export const getCustomers = createAsyncThunk(
     
 );
 
+export const addCustomer = createAsyncThunk(
+    'customers/addCustomer',
+    async (customerData, {dispatch}) => {   
+
+        const response = await axios.post("http://localhost:8080/api/customers", customerData);
+        dispatch(getCustomers());
+        return response.data;
+
+})
+
+export const deleteCustomer = createAsyncThunk(
+    'customers/deleteCustomer',
+    async (customerId, { dispatch }) => {
+        await axios.delete(`http://localhost:8080/api/customers/${customerId}`);
+        dispatch(getCustomers());
+        return customerId;
+    }
+);
+
+export const updateCustomer = createAsyncThunk(
+    'customers/updateCustomer',
+    async (customerData, { dispatch }) => {
+        const response = await axios.put(`http://localhost:8080/api/customers/${customerData.customerId}`, customerData);
+        dispatch(getCustomers());
+        return response.data;
+    }
+);
 
 export const customerSlice = createSlice({
     name: 'customers',
@@ -42,6 +69,9 @@ export const customerSlice = createSlice({
     reducers: {
         selectCustomer : (state , action) => {
             state.selectedCustomer = action.payload;
+        },
+        clearCustomerSelection: (state) => {
+            state.selectedCustomer = null;
         }
     },
     extraReducers: (builder) => {
@@ -54,10 +84,19 @@ export const customerSlice = createSlice({
             .addCase(getCustomers.rejected, (state, action) => {
                 state.customerStatus = 'failed';
                 state.error = action.error.message;
+            })
+            .addCase(deleteCustomer.fulfilled, (state, action) => {
+                state.customers = state.customers.filter(customer => customer.customerId !== action.payload);
+            })
+            .addCase(updateCustomer.fulfilled, (state, action) => {
+                const index = state.customers.findIndex(customer => customer.customerId === action.payload.customerId);
+                if (index !== -1) {
+                    state.customers[index] = action.payload;
+                }
             });
     }
 
 })
 
-export const {selectCustomer} = customerSlice.actions;
+export const {selectCustomer , clearCustomerSelection} = customerSlice.actions;
 export default customerSlice.reducer;

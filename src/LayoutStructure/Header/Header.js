@@ -4,10 +4,12 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { useSelector } from 'react-redux';
 
 function Header ({onMenuButtonClick}) {
+    const user = useSelector(state => state.users.user);
+    const [dateTime, setDateTime] = useState(new Date());
 
-    const [dateTime, setDateTime] = useState(new Date())
     useEffect(() => {
             const timer = setInterval(() => {
                 setDateTime(new Date());
@@ -25,7 +27,7 @@ function Header ({onMenuButtonClick}) {
             <p className='live-datetime'>{dateTime.toLocaleString()}</p>
             </div>
             <AccountCircleIcon fontSize='large'/>
-            <p style={{paddingRight: '20px' , paddingLeft:'10px'}}>Employee name</p>
+            <p style={{paddingRight: '20px' , paddingLeft:'10px'}}>{user ? user.userName : 'guest'}</p>
         </header>
     );
 }

@@ -40,6 +40,9 @@ const productListSlice = createSlice({
     reducers: {
         selectProduct: (state, action) => {
             state.selectedProduct = action.payload;
+        },
+        clearProducts: (state) => {
+            state.selectedProduct = null;
         }
     },
     extraReducers: (builder) => {
@@ -55,6 +58,6 @@ const productListSlice = createSlice({
     }
 });
 
-export const { selectProduct } = productListSlice.actions;
+export const { selectProduct , clearProducts} = productListSlice.actions;
 
 export default productListSlice.reducer;
